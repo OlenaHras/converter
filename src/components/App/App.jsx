@@ -8,10 +8,10 @@ import reverseSvg from '../../icons/reverse.svg';
 import './App.css';
 
 function App() {
-  const [amount1, setAmount1] = useState('');
-  const [amount2, setAmount2] = useState('');
-  const [currency1, setCurrency1] = useState('UAH');
-  const [currency2, setCurrency2] = useState('UAH');
+  const [firstAmount, setFirstAmount] = useState('');
+  const [secondAmount, setSecondAmount] = useState('');
+  const [firstCurrency, setFirstCurrency] = useState('UAH');
+  const [secondCurrency, setSecondCurrency] = useState('UAH');
   const [listOfCurrents, setListOfCurrents] = useState({});
 
   useEffect(() => {
@@ -21,73 +21,72 @@ function App() {
       )
       .then(response => {
         setListOfCurrents(response.data.rates);
-        console.log(response.data.rates);
       });
   }, []);
 
-  const handleAmountChange1 = amount1 => {
-    setAmount2(
+  const handleFirstAmountChange = firstAmount => {
+    setSecondAmount(
       (
-        (amount1 * listOfCurrents[currency2]) /
-        listOfCurrents[currency1]
+        (firstAmount * listOfCurrents[secondCurrency]) /
+        listOfCurrents[firstCurrency]
       ).toFixed(2)
     );
-    setAmount1(amount1);
+    setFirstAmount(firstAmount);
   };
 
-  const handleCurrencyChange1 = currency1 => {
-    setAmount1(
+  const handleFirstCurrencyChange = firstCurrency => {
+    setFirstAmount(
       (
-        (amount2 * listOfCurrents[currency1]) /
-        listOfCurrents[currency2]
+        (secondAmount * listOfCurrents[firstCurrency]) /
+        listOfCurrents[secondCurrency]
       ).toFixed(2)
     );
-    setCurrency1(currency1);
+    setFirstCurrency(firstCurrency);
   };
-  const handleAmountChange2 = amount2 => {
-    setAmount1(
+  const handleSecondAmountChange = secondAmount => {
+    setFirstAmount(
       (
-        (amount2 * listOfCurrents[currency1]) /
-        listOfCurrents[currency2]
+        (secondAmount * listOfCurrents[firstCurrency]) /
+        listOfCurrents[secondCurrency]
       ).toFixed(2)
     );
-    setAmount2(amount2);
+    setSecondAmount(secondAmount);
   };
 
-  const handleCurrencyChange2 = currency2 => {
-    setAmount2(
+  const handleSecondCurrencyChange = secondCurrency => {
+    setSecondAmount(
       (
-        (amount1 * listOfCurrents[currency2]) /
-        listOfCurrents[currency1]
+        (firstAmount * listOfCurrents[secondCurrency]) /
+        listOfCurrents[firstCurrency]
       ).toFixed(2)
     );
-    setCurrency2(currency2);
+    setSecondCurrency(secondCurrency);
   };
 
   const handleToggleBtn = () => {
-    setCurrency1(currency2);
-    setCurrency2(currency1);
-    handleAmountChange1(amount2);
-    handleCurrencyChange2(currency1);
+    setFirstCurrency(secondCurrency);
+    setSecondCurrency(firstCurrency);
+    handleFirstAmountChange(secondAmount);
+    handleSecondCurrencyChange(firstCurrency);
   };
 
   return (
     <div className="App">
       <AppBar currens={listOfCurrents} />
       <Converter
-        amount={amount1}
-        currency={currency1}
-        handleAmountChange={handleAmountChange1}
-        handleCurrencyChange={handleCurrencyChange1}
+        amount={firstAmount}
+        currency={firstCurrency}
+        handleAmountChange={handleFirstAmountChange}
+        handleCurrencyChange={handleFirstCurrencyChange}
       />
       <Button type="button" onClick={handleToggleBtn} variant="outlined">
         <img src={reverseSvg} alt="reverse" />
       </Button>
       <Converter
-        amount={amount2}
-        currency={currency2}
-        handleAmountChange={handleAmountChange2}
-        handleCurrencyChange={handleCurrencyChange2}
+        amount={secondAmount}
+        currency={secondCurrency}
+        handleAmountChange={handleSecondAmountChange}
+        handleCurrencyChange={handleSecondCurrencyChange}
       />
     </div>
   );
