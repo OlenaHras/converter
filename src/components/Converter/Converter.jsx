@@ -7,7 +7,7 @@ import plnFlag from '../../icons/pl.svg';
 import eurFlag from '../../icons/eu.svg';
 import usdFlag from '../../icons/us.svg';
 
-const ConverterInput = props => {
+const Converter = props => {
   return (
     <div>
       <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
@@ -42,4 +42,4 @@ const ConverterInput = props => {
     </div>
   );
 };
-export default ConverterInput;
+export default Converter;

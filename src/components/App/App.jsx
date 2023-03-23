@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button } from '@mui/material';
 import AppBar from '../AppBar/AppBar';
-import ConverterInput from '../ConverterInput/ConverterInput';
+import Converter from '../Converter/Converter';
 
 import reverseSvg from '../../icons/reverse.svg';
 import './App.css';
@@ -67,14 +67,14 @@ function App() {
   const handleToggleBtn = () => {
     setCurrency1(currency2);
     setCurrency2(currency1);
-    handleAmountChange1(amount1);
-    handleAmountChange2(amount2);
+    handleAmountChange1(amount2);
+    handleCurrencyChange2(currency1);
   };
 
   return (
     <div className="App">
       <AppBar currens={listOfCurrents} />
-      <ConverterInput
+      <Converter
         amount={amount1}
         currency={currency1}
         handleAmountChange={handleAmountChange1}
@@ -83,7 +83,7 @@ function App() {
       <Button type="button" onClick={handleToggleBtn} variant="outlined">
         <img src={reverseSvg} alt="reverse" />
       </Button>
-      <ConverterInput
+      <Converter
         amount={amount2}
         currency={currency2}
         handleAmountChange={handleAmountChange2}
