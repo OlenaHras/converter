@@ -2,7 +2,7 @@
   "name": "converter",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://OlenaHras.github.io/converter/",
+  "homepage": "https://olenahras.github.io/converter/",
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
