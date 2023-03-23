@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Button } from '@mui/material';
 import AppBar from '../AppBar/AppBar';
-import Converter from '../Converter/Converter';
 import ConverterInput from '../ConverterInput/ConverterInput';
 
+import reverseSvg from '../../icons/reverse.svg';
 import './App.css';
 
 function App() {
@@ -14,29 +15,61 @@ function App() {
   const [listOfCurrents, setListOfCurrents] = useState({});
 
   useEffect(() => {
-    axios({
-      method: 'get',
-      url: 'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?json',
-    }).then(({ data }) => {
-      const usd = data.find(item => item.cc === 'USD');
-      const eur = data.find(item => item.cc === 'EUR');
-      setListOfCurrents({ UAH: 1, [usd.cc]: usd.rate, [eur.cc]: eur.rate });
-    });
+    axios
+      .get(
+        'https://api.apilayer.com/exchangerates_data/latest?base=UAH&apikey=81I8Eqi9YZBkrMtF61fXZ773KRvm7wzc'
+      )
+      .then(response => {
+        setListOfCurrents(response.data.rates);
+        console.log(response.data.rates);
+      });
   }, []);
 
-  const countAmound = amount1 => {
-    setAmount1(amount1);
+  const handleAmountChange1 = amount1 => {
     setAmount2(
       (
         (amount1 * listOfCurrents[currency2]) /
         listOfCurrents[currency1]
       ).toFixed(2)
     );
+    setAmount1(amount1);
   };
-  // const handleListOfCurrents = () => {
-  //   console.log(listOfCurrents);
-  // };
-  // handleListOfCurrents();
+
+  const handleCurrencyChange1 = currency1 => {
+    setAmount1(
+      (
+        (amount2 * listOfCurrents[currency1]) /
+        listOfCurrents[currency2]
+      ).toFixed(2)
+    );
+    setCurrency1(currency1);
+  };
+  const handleAmountChange2 = amount2 => {
+    setAmount1(
+      (
+        (amount2 * listOfCurrents[currency1]) /
+        listOfCurrents[currency2]
+      ).toFixed(2)
+    );
+    setAmount2(amount2);
+  };
+
+  const handleCurrencyChange2 = currency2 => {
+    setAmount2(
+      (
+        (amount1 * listOfCurrents[currency2]) /
+        listOfCurrents[currency1]
+      ).toFixed(2)
+    );
+    setCurrency2(currency2);
+  };
+
+  const handleToggleBtn = () => {
+    setCurrency1(currency2);
+    setCurrency2(currency1);
+    handleAmountChange1(amount1);
+    handleAmountChange2(amount2);
+  };
 
   return (
     <div className="App">
@@ -44,15 +77,17 @@ function App() {
       <ConverterInput
         amount={amount1}
         currency={currency1}
-        // countAmound={countAmound}
-        handleAmountChange={countAmound}
-        handleCurrencyChange={setCurrency1}
+        handleAmountChange={handleAmountChange1}
+        handleCurrencyChange={handleCurrencyChange1}
       />
+      <Button type="button" onClick={handleToggleBtn} variant="outlined">
+        <img src={reverseSvg} alt="reverse" />
+      </Button>
       <ConverterInput
         amount={amount2}
         currency={currency2}
-        handleAmountChange={setAmount2}
-        handleCurrencyChange={setCurrency2}
+        handleAmountChange={handleAmountChange2}
+        handleCurrencyChange={handleCurrencyChange2}
       />
     </div>
   );

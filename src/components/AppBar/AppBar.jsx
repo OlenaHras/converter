@@ -1,8 +1,10 @@
-const AppBar = ({ currens }) => {
-  let currentDate = new Date().toJSON().slice(0, 10);
+import moment from 'moment/moment';
+import { Container } from './AppBar.styled';
 
+const AppBar = ({ currens }) => {
+  let currentDate = moment().format('D/MM/YYYY');
   return (
-    <div>
+    <Container>
       <h1>Курс валют на {currentDate}</h1>
       <table id="table">
         <thead>
@@ -13,16 +15,20 @@ const AppBar = ({ currens }) => {
         </thead>
         <tbody>
           <tr>
-            <td>EUR</td>
-            <td>{currens.EUR}</td>
+            <td>1 EUR =</td>
+            <td>{(currens.UAH / currens.EUR).toFixed(2)} UAH</td>
           </tr>
           <tr>
-            <td>USD</td>
-            <td>{currens.USD}</td>
+            <td>1 USD = </td>
+            <td>{(currens.UAH / currens.USD).toFixed(2)} UAH</td>
+          </tr>
+          <tr>
+            <td>1 PLN = </td>
+            <td>{(currens.UAH / currens.PLN).toFixed(2)} UAH</td>
           </tr>
         </tbody>
       </table>
-    </div>
+    </Container>
   );
 };
 
