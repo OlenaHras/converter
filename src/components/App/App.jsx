@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Button } from '@mui/material';
 import AppBar from '../AppBar/AppBar';
 import Converter from '../Converter/Converter';
+import Spinner from '../Spinner/Spinner';
 
 import reverseSvg from '../../icons/reverse.svg';
 import './App.css';
@@ -70,7 +71,9 @@ function App() {
     handleSecondCurrencyChange(firstCurrency);
   };
 
-  return (
+  return Object.keys(listOfCurrents).length === 0 ? (
+    <Spinner />
+  ) : (
     <div className="App">
       <AppBar currens={listOfCurrents} />
       <Converter
